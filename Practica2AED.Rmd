@@ -88,13 +88,68 @@ grafico3
 Por último, almacenamos el gráfico en formato pdf.
 ```{r}
 
+if(!file.exists("results")){
+  dir.create("./results")
+}
+
 library(grDevices)
-pdf("Ejercicio1.pdf")
+pdf("./results/Ejercicio1.pdf")
 print(grafico3)
 dev.off()
 ```
 
 ## Ejercicio 2 ##
+
+Con los mismos datos vamos a realizar otro gráfico en el que representamos las variables Temp9am y Pressure9am.
+```{r}
+grafico_ej2 <- ggplot(data = ds, aes(x = Temp9am, y = Pressure9am)) +
+  geom_point() 
+
+grafico_ej2
+```
+Para mejorar la visibilidad,detallamos la forma de los puntos según la variable RainToday.
+```{r}
+grafico_ej2 <- ggplot(data = ds, aes(x = Temp9am, y = Pressure9am, shape = RainToday)) +geom_point() 
+
+grafico_ej2
+```
+  Para mejorar la visibilidad,introducios también el color de los puntos según la variable RainToday.
+```{r}
+grafico_ej2 <- ggplot(data = ds, aes(x = Temp9am, y = Pressure9am, color = RainToday, shape = RainToday)) +geom_jitter() 
+
+grafico_ej2
+```
+  Observaamos que la forma no aclara del todo la gráfica, mientras que el color si que permite distinguir mejor cada categoría de los datos, aunque la manera más clara de visualizar los datos es al combinar la forma y el color.
+  
+Ahora, añadiremos distintos títulos explicativos a la gráfica.
+```{r}
+grafico_ej2 <- grafico_ej2 + labs(
+    title = "Relación entre Temperatura y Presión Atmosférica a las 9:00 AM",
+    subtitle = "Análisis de la relación entre la lluvia y las condiciones climáticas",
+    x = "Temperatura a las 9:00 AM (°C)",
+    y = "Presión Atmosférica a las 9:00 AM (hPa)",
+    color = "¿Hubo lluvia?",
+    shape = "¿Hubo lluvia?"
+  ) 
+
+```
+Finalmente guardamos el gráfico en formato pdf, pero ahoa utilizamos la función nativa de ggplot2 para hacerlo.
+```{r}
+ggsave('./results/Ejercicio2.pdf',plot = grafico_ej2)
+``` 
+
+# 3. Mostrar el gráfico en la consola de R
+print(grafico_final)
+
+# 4. Almacenar el gráfico resultante en formato PDF
+ggsave(
+  filename = "Ejercicio2.pdf", 
+  plot = grafico_final, 
+  device = "pdf", 
+  width = 8, 
+  height = 6
+)
+
 ## Ejercicio 3 ##
 ## Ejercicio 4 ##
 ## Ejercicio 5 ##
