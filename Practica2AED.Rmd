@@ -50,8 +50,50 @@ language:
     remark: 'Nota: '
     solution: 'Solución. '
 ---
-
+Esta práctica consiste sobre la realización de gráficas usando el paquete ggplot2, por lo que lo primero que haremos será comprobar si está instalado y cargarlo en el entorno de trabajo.
+```{r}
+if(requireNamespace("ggplot2")){
+  library("ggplot2")
+}else{
+  install.packages("ggplot2")
+}
+```
 ## Ejercicio 1 ##
+Empezamos cargando el fichero de los datos con el que vamos a realizar el gráfico. En este caso 
+```{r}
+weather_df <- load("./data/weatherAUS.Rdata")
+```
+
+Ahora creamos el objeto ggplot base sobre el que trabajaremos la visualización gráfica de estos datos.
+```{r}
+grafico1 <- ggplot(ds,aes(x =MinTemp , y = MaxTemp))
+grafico1
+```
+Añadimos el objeto gráfico que permite visualizar un gráfico de dispersión entre las vairables MinTemp y MaxTemp.
+```{r}
+grafico1 <- grafico1 + geom_point(mapping = aes(x =MinTemp , y = MaxTemp))
+grafico1
+```
+Ahora generaremos el mismo gráfico, pero utilizaremos la variable categórica RainTomorrow para dar color a los puntos.
+```{r} 
+grafico2 <- ggplot(ds,aes(x =MinTemp , y = MaxTemp,color = RainTomorrow))
+grafico2 <- grafico2 + geom_point(mapping = aes(x =MinTemp , y = MaxTemp,color = RainTomorrow))
+grafico2
+```
+Añadimos al gráfico 2 una capa para ponerle título, y los guardamos en una variable llamada gráfico 3.
+```{r}
+grafico3 <- grafico2 + ggtitle("LLuvia según la temperatura máxima y mínima")
+grafico3
+```
+Por último, almacenamos el gráfico en formato pdf.
+```{r}
+
+library(grDevices)
+pdf("Ejercicio1.pdf")
+print(grafico3)
+dev.off()
+```
+
 ## Ejercicio 2 ##
 ## Ejercicio 3 ##
 ## Ejercicio 4 ##
