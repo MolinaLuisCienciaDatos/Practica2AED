@@ -285,7 +285,57 @@ ggsave('./results/Ejercicio6.pdf')
 Volvemos a trabajar con datos del clima de Australia, en este caso con el fichero `weatherAUS_distributions`.
 ```{r}
 load("./data/weatherAUS_distributions.Rdata")
-
+str(ds)
 ```
+
+Vamos a visualizar la variable MinTemp mediante boxplots a lo largo de cada año del conjunto de datos.
+
+```{r}
+grafico_boxplots <- ggplot(ds, aes(x = factor(Year), y = MinTemp)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribución de Temperaturas Mínimas por Año",
+    x = "Año",
+    y = "Temperatura Mínima (ºC)"
+  ) +
+  theme_minimal()
+
+print(grafico_boxplots)
+```
+Observamos que a excepción de un par de outliers los valores están más o menos en un rangos similares, a excepción del año 2016 en el que los valores son muy altos.
+
+Ahora, vamos a visualizar la temperatura máxima a lo largo de cada año haciendo uso de violin plots.
+```{r}
+grafico_violines <- ggplot(ds, aes(x = factor(Year), y = MaxTemp, fill = factor(Year))) +
+  geom_violin() +
+  labs(
+    title = "Distribución de temperaturas máximas por año",
+    x = "Año",
+    y = "Temperatura (ºC)"
+  ) +
+  theme_minimal()
+
+print(grafico_violines)
+```
+
+Al igual que ocurría con la temperatura mínima, los valores se concentran en rangos similares, a excepción del año 2016, en el que son atípicamente altos. Para facilitar la lectura de los datos, vamos a eliminar la leyenda de los años e introducir esa información debajo de su violin plot correspondiente.
+
+```{r}
+grafico_violines <- ggplot(ds, aes(x = factor(Year), y = MaxTemp, fill = factor(Year))) +
+  geom_violin() +
+  labs(
+    title = "Distribución de temperaturas máximas por año",
+    x = "Año",
+    y = "Temperatura (ºC)"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none", # Elimina la leyenda
+    axis.text.x = element_text(angle = 45, hjust = 1) # Inclina los años 45 grados
+  )
+
+print(grafico_violines)
+```
+
 
 ## Ejercicio 8 ##
