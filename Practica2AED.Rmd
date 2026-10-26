@@ -216,9 +216,47 @@ grafico_ventas
 ```
 Añadimos un título al gráfico y lo guardamos en formato pdf.
 ```{r}
-grafico_Ventas <- grafico_ventas + labs(title= "Ventas mensuales de diferentes compañías tecnológicas"")
+grafico_Ventas <- grafico_ventas + labs(title= "Ventas mensuales de diferentes compañías tecnológicas")
+ggsave('./results/Ejercicio4.pdf')
+
 ```
 ## Ejercicio 5 ##
+
+En este ejercicio vamos a añadir barras de error a gráficos de líneas de tendencia. Para empezar, cargamos el conjunto de datos con el que trabajaremos, que en este caso es `Experimento.Rdata`.
+
+```{r}
+load(file = "./data/Experimento.Rdata")
+
+str(Experimento)
+``` 
+En el conjunto de datos tenemos las variables categórica Complemento,y las variables numéricas Dosis,Altura y Error_Altura. Empezamos representando los datos, según el tipo de complemento en dos líneas de tendencia, en las que un eje esla Dosis (eje x ), mientras que el otro es la altura (eje y)
+```{r}
+grafico_experimento <- ggplot(data = Experimento,aes(x = Dosis,y = Altura,color = Complemento, linetype = Complemento)) +geom_jitter(aes(shape = Complemento))+ geom_line()
+print(grafico_experimento)
+``` 
+La varibale `Error_Altura` reperesenta un error de medición, que añadimos al gráfico haciendo uso de gráficas de error.
+
+```{r}
+grafico_experimento <- grafico_experimento +geom_errorbar(aes(ymin=Altura-Error_Altura, ymax=Altura+Error_Altura), width=0.1,
+    position=position_dodge(0.05))
+print(grafico_experimento)
+``` 
+
+Vamos a crear un gráfico idéntico, pero sin especificar el tipo de línea y color en `ggplot()`
+
+```{r}
+grafico_experimento2 <- ggplot(data = Experimento,aes(x = Dosis,y = Altura,color = Complemento)) + geom_jitter(aes(color = Complemento,shape = Complemento)) + geom_line(aes(color = Complemento, linetype = Complemento)) 
+
+grafico_experimento2 <- grafico_experimento +geom_errorbar(aes(ymin=Altura-Error_Altura, ymax=Altura+Error_Altura), width=0.1,
+    position=position_dodge(0.05))+ scale_color_brewer(palette  = "Reds") 
+
+print(grafico_experimento2)
+``` 
+
+Por último, guardamos el resultado en formato pdf. 
+```{r}
+ggsave('./results/Ejercicio5.pdf')
+```
 ## Ejercicio 6 ##
 ## Ejercicio 7 ##
 ## Ejercicio 8 ##
