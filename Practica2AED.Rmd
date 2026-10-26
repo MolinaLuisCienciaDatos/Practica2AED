@@ -257,6 +257,35 @@ Por último, guardamos el resultado en formato pdf.
 ```{r}
 ggsave('./results/Ejercicio5.pdf')
 ```
+
 ## Ejercicio 6 ##
+Vamos a trabajr con datos del caudal de dos ríos islandeses medidos a diarios durante 3 años.
+```{r}
+load("./data/iceRiver.Rdata")
+
+str(ice.river.df)
+```
+Vamos a representar las series de datos de los caudales de ambos ríos.
+```{r}
+grafico_rios <- ggplot(data = ice.river.df, aes(x = time)) +
+  geom_line(aes(y = flow.vat, color = "flow.vat")) +
+  geom_line(aes(y = flow.jok, color = "flow.jok")) +
+  scale_color_manual(
+    values = c("flow.vat" = "red", "flow.jok" = "blue"),
+    labels = c("Río Jok", "Río Vat")
+  ) + labs(title = "Evolución del caudal de los ríos islandeses",subtitle = "Registro diario a lo largo de 3 años",x = "Tiempo (Años)",y = "Caudal",color = "Serie de Datos") +theme_minimal()
+
+print(grafico_rios)
+```
+```{r}
+ggsave('./results/Ejercicio6.pdf')
+```
+
 ## Ejercicio 7 ##
+Volvemos a trabajar con datos del clima de Australia, en este caso con el fichero `weatherAUS_distributions`.
+```{r}
+load("./data/weatherAUS_distributions.Rdata")
+
+```
+
 ## Ejercicio 8 ##
