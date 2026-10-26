@@ -187,6 +187,37 @@ Y así observamos que los datos ya no están tan amontonados en la gráfica. Fin
 ggsave('./results/Ejercicio3.pdf')
 ```
 ## Ejercicio 4 ##
+
+Empezamos cargando los datos que usaremos, en este caso, los del conjunto `Ejercicio4_Data`, y observamos las variables de los datos.
+```{r}
+load("./data/Ejercicio4_Data.Rdata")
+
+str(DatosEjer4)
+```
+Las variables son Fecha, Fabricante y Ventas, por lo que es bastante claro que tenemos un conjunto de datos de ventas de algún producto (electrónico por los fabricantes que se mencionan) a lo largo de distintas fechas. Para trabajar correctamente con las fechas, las convertimos usando el formato `POSIXct`.
+```{r}
+DatosEjer4$Fecha <- as.POSIXct(DatosEjer4$Fecha, format = "%Y-%m-%d")
+``` 
+
+Primero, mostramos un gráfico de puntos de las ventas a lo largo de las distintas fechas según el fabricante.
+```{r}
+grafico_ventas <- ggplot(data = DatosEjer4, aes(x = Fecha, y = Ventas,group = Fabricante)) 
+grafico_ventas +geom_point(aes(color = Fabricante))
+```
+Claramente, este no es el tipo de gráfico que mejor muestra la evolución de los datos a lo largo del tiempo, por lo que le vamos a añadir líneas de tendencia.
+
+```{r}
+ grafico_ventas + geom_point(aes(color = Fabricante)) + geom_line(aes(color = Fabricante))
+```
+Para hacer más notable la diferencia entre fabricantes, a cada uno le vamos a asignar un tipo de línea distinto.
+```{r}
+grafico_ventas <- grafico_ventas + geom_point(aes(color = Fabricante,shape = Fabricante)) + geom_line(aes(linetype=Fabricante,color = Fabricante))
+grafico_ventas
+```
+Añadimos un título al gráfico y lo guardamos en formato pdf.
+```{r}
+grafico_Ventas <- grafico_ventas + labs(title= "Ventas mensuales de diferentes compañías tecnológicas"")
+```
 ## Ejercicio 5 ##
 ## Ejercicio 6 ##
 ## Ejercicio 7 ##
