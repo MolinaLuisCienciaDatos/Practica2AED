@@ -1,39 +1,23 @@
 ---
-# El segmento entre --- se denomina cabecera YALM y determina el formato y tipo de documento generado
-# Las opciones dependen del tipo de documento que se quiera generar
-# Ver https://bookdown.org/yihui/rmarkdown/ 
-
 title: "Práctica 2 AED"
-subtitle: Visualizaciones Gráficas
 author: "Luis Molina Villar"
-#Pone la fecha de generación del documento
-date:  "`r Sys.Date()`"  #Pondría la fecha del día actual
-# Para que en lugar de "Contents" ponga "Indice" al incluir la tabla de contenido
-
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+  html_notebook:
+    echo: true
+    number_sections: true
+    toc: true
+  html_document:
+    echo: true
+    number_sections: true
+    theme: cerulean
+    toc: true
 params:
   lang: ES
 lang: "`r switch(params$lang, ES = 'es-ES', EN = 'en-US')`"
-
-# Por defecto se generará un salida html
-# Si si quieres otras salidas o varias de ellas descomenta lo que proceda
-output:
-# Salida pdf. Si se incluye código en LaTex necesitarás tener instalado un compilador de Latex
-# pdf_document:
-#   toc: yes      # Tabla de contenido (índice)
-#   toc_depth: 3  # Número de niveles de la tabla de contenido (índice) # 1, ##2,###3
-#    number_sections: yes # Numeración de las secciones
-# Salida html, 
-  html_document:
-    echo: yes
-    number_sections: yes
-    theme: cerulean    # Aspecto y estilo,otras opciones: cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, and yeti 
-    toc: yes
-# Salida html_notebook, como html, pero con algunas opciones de visualización
-  html_notebook:
-    echo: yes
-    number_sections: yes
-    toc: yes
-# Esto nos permite traducir estas etiquetas para que aparezcan en otro idioma en caso de que se usen en el documento para referenciar a figuras, tablas, etc
+subtitle: Visualizaciones Gráficas
 language:
   label:
     fig: 'Figura '
@@ -337,5 +321,52 @@ grafico_violines <- ggplot(ds, aes(x = factor(Year), y = MaxTemp, fill = factor(
 print(grafico_violines)
 ```
 
+Finalmente guardamos el gráfico en formato pdf.
+```{r}
+ggsave('./results/Ejercicio7.pdf')
+
+```
 
 ## Ejercicio 8 ##
+
+Para este ejerciciodecargaremos los datos desde internet, y trabajaremos con histogramas. Empezamos descargando los datos de internet y cargandolos en R.
+```{r}
+url_datos <- "http://assets.datacamp.com/blog_assets/chol.txt"
+
+download.file(url = url_datos,destfile = "./data/DataEjercicio8.txt")
+df_ej8 <- read.csv(file = "./data/DataEjercicio8.txt",sep = "")
+```
+
+Vamos a visualizar la variable HEIGHT mediante un histograma.
+```{r}
+grafico_altura <- ggplot(df_ej8, aes(x = HEIGHT)) +geom_histogram()
+
+print(grafico_altura)
+```
+Añadimos etiquetas al gráfico para mejorar la visualización de los gráficos.
+```{r}
+grafico_altura <- grafico_altura + labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia"
+  )
+
+print(grafico_altura)
+```
+Ajustamos el rango de representación entre 155 y 190, y forzamos a que haya 20 bins.
+```{r}
+grafico_altura <- ggplot(df_ej8, aes(x = HEIGHT)) +
+  geom_histogram(
+    breaks = seq(155, 195, length.out = 21) ) +
+  labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia" )
+
+print(grafico_altura)
+```
+
+```{r}
+ggsave('./results/Ejercicio8.pdf')
+
+```
